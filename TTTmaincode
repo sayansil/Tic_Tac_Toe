@@ -1,0 +1,337 @@
+import java.util.Scanner;
+
+public class TicTacToe
+{
+    char[][] grid;
+    
+    char[][] temp;
+    
+    char ai;
+    
+    char h;
+    
+    int turn;
+    
+    int level;
+    
+    public TicTacToe()
+    {
+        
+        grid=new char[3][3];
+        ai='0';
+        h='x';
+        turn=1;
+        
+    }
+
+    public static void main()throws Exception
+    {
+        
+        TicTacToe ob=new TicTacToe();
+        
+        ob.startGame();
+        
+    }
+
+    public void chooseChar()
+    {
+        
+        Scanner sc=new Scanner(System.in);
+        
+        do
+        {
+            
+            System.out.println("Choose your character:");
+            h=sc.nextLine().charAt(0);
+            
+            System.out.println("Choose computer's character:");
+            ai=sc.nextLine().charAt(0);
+            
+            System.out.print("\u000c");
+            
+        }
+        while(h==ai);
+        
+        turn=(int)(Math.random())+1;
+        
+    }
+
+    public void startGame()
+    {
+        
+        chooseChar();
+        
+        grid=new char[3][3];
+        
+        preArrange();
+
+        while(GameContinues())
+        {
+            
+            if(turn++%2==1)
+            {
+                
+                display();
+                
+                humanTurn();
+                
+                if(check(grid))
+                {
+                    display();
+                    System.out.println("\n\nHuman won!!");
+                    return;
+                }
+
+            }
+            
+            else
+            {
+                
+                display();
+                
+                aiTurn();
+                
+                if(check(grid))
+                {
+                    display();
+                    System.out.println("\n\nComputer won!!");
+                    return;
+                }
+                
+            }
+            
+        }
+        
+        display();
+        
+        System.out.println("\nNobody won. It's a tie.\n:-)");
+        
+    }
+
+    public void display()
+    {
+        
+        System.out.println("\u000c");
+        
+        System.out.println();
+        
+        System.out.print("   ");
+        
+        for(int i=0;i&lt;3;i++)
+        {
+            System.out.print(" "+i+"  ");
+        }
+
+        System.out.println("\n");
+
+        for(int i=0;i&lt;3;i++)
+        {
+            System.out.print(i+"  ");
+
+            for(int j=0;j&lt;3;j++)
+            {
+                System.out.print(" "+grid[i][j]+" ");
+
+                if(j!=2)
+                {
+                    System.out.print("|");
+                }
+            }
+
+            if(i!=2)
+            {
+                System.out.println("\n    ----------");
+            }
+        }
+
+    }
+
+    public boolean check(char[][] grid2)
+    {
+
+        for(int i=0;i&lt;3;i++)
+        {
+            if(grid2[i][0]==grid2[i][1]&amp;&amp;grid2[i][1]==grid2[i][2]&amp;&amp;grid2[i][2]!=' ')
+            {
+                return true;
+            }
+
+            if(grid2[0][i]==grid2[1][i]&amp;&amp;grid2[1][i]==grid2[2][i]&amp;&amp;grid2[2][i]!=' ')
+            {
+                return true;
+            }
+        }
+
+        if(grid2[0][0]==grid2[1][1]&amp;&amp;grid2[1][1]==grid2[2][2]&amp;&amp;grid2[2][2]!=' ')
+        {
+            return true;
+        }
+
+        if(grid2[0][2]==grid2[1][1]&amp;&amp;grid2[1][1]==grid2[2][0]&amp;&amp;grid2[0][2]!=' ')
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public void preArrange()
+    {
+
+        for(int i=0;i&lt;3;i++)
+        {    
+            for(int j=0;j&lt;3;j++)
+            {
+                grid[i][j]=' ';
+            }
+        }
+
+    }
+
+    public boolean GameContinues()
+    {
+
+        for(int i=0;i&lt;3;i++)
+        {   
+            for(int j=0;j&lt;3;j++)
+            {
+                if(grid[i][j]==' ')
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+    public boolean valid(int a, int b)
+    {
+
+        if(a&lt;0||a&gt;3)
+        {
+            return false;
+        }
+
+        if(b&lt;0||b&gt;3)
+        {
+            return false;
+        }
+
+        if(grid[a][b]==' ')
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public void aiTurn()
+    {
+
+        int a,b;
+
+        do
+        {
+            a=(int)(Math.random()*3);
+
+            b=(int)(Math.random()*3);
+        }while(!valid(a,b));
+
+        for(int i=0;i&lt;3;i++)
+        { 
+            for(int j=2;j&gt;=0;j--)
+            {
+                if(grid[i][j]==' '&amp;&amp;preCheckW(i,j))
+                {
+                    grid[i][j]=ai;
+                    return;
+                }
+            }
+        }
+
+        for(int i=0;i&lt;3;i++)
+        {
+            for(int j=2;j&gt;=0;j--)
+            {
+                if(grid[i][j]==' '&amp;&amp;preCheckL(i,j))
+                {
+                    grid[i][j]=ai;
+                    return;
+                } 
+            }
+        }
+
+        grid[a][b]=ai;
+
+    }
+
+    public void humanTurn()
+    {
+
+        Scanner sc=new Scanner(System.in);
+
+        int a,b;
+
+        System.out.print("\n\nEnter your Co-ordinates: ");
+        a=sc.nextInt();
+        b=sc.nextInt();
+
+        while(!valid(a,b))
+        {
+            System.out.println("Co-ordinates were invalid.");
+            System.out.print("Enter again: ");
+            a=sc.nextInt();
+            b=sc.nextInt();
+        }
+
+        grid[a][b]=h;
+
+    }
+
+    public boolean preCheckW(int a,int b)
+    {
+
+        char[][] temp=new char[3][3];
+
+        for(int i=0;i&lt;3;i++)
+        {
+            for(int j=0;j&lt;3;j++)
+            {
+                temp[i][j]=grid[i][j];
+            }
+        }
+
+        temp[a][b]=ai;
+
+        return check(temp);
+
+    }
+
+    public boolean preCheckL(int a, int b)
+    {
+
+        char[][] temp=new char[3][3];
+
+        for(int i=0;i&lt;3;i++)
+        {
+            for(int j=0;j&lt;3;j++)
+            {
+                temp[i][j]=grid[i][j];
+            }
+        }
+
+        temp[a][b]=h;
+
+        return check(temp);
+
+    }
+}
+
+/*#
+Name: Sayan Sil
+St. James School
+#*/
