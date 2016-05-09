@@ -15,7 +15,7 @@ public class TicTacToe extends DeveloperTTT
         p=0.1;
     }
 
-    public static void main()throws Exception
+    public static void main(String args[])throws Exception
     {
         TicTacToe ob=new TicTacToe();
 
