@@ -1,13 +1,15 @@
 import java.util.Scanner;
 
-public class TicTacToe extends DeveloperTTT
+class Main extends DeveloperTTT
 {
-    char[][] grid;
-    int turn;
-    int level;
-    double p;
-    int cmove=0;
-    public TicTacToe()
+    private char[][] grid;
+    private int turn;
+    private int level;
+    private double p;
+    private int cmove=0;
+    private int[] lastmove={0,0};
+
+    private Main()
     {
         grid=new char[3][3];
         turn=1;
@@ -17,32 +19,32 @@ public class TicTacToe extends DeveloperTTT
 
     public static void main(String args[])throws Exception
     {
-        TicTacToe ob=new TicTacToe();
+        Main ob=new Main();
 
         ob.startGame();
     }
 
-    public void chooseLevel()
+    private void chooseLevel()
     {
         Scanner sc=new Scanner(System.in);
         do
         {
             System.out.println("Choose your level");
-            System.out.println("1. Easy\n2. Medium\n3. Difficult\n4. Play agaist Darth_Vader (He starts first)\n WARNING:#4 is not suggested\n\n1 / 2 / 3 / 4 ???\n");
+            System.out.println("1. Easy\n2. Medium\n3. Difficult\n4. Play against Darth_Vader (He starts first)\n WARNING:#4 is not suggested\n\n1 / 2 / 3 / 4 ???\n");
             level=sc.nextInt();
 
             System.out.print("\u000c");
         }
         while(level>4||level<1);
         if(level==1)
-            p=p1;
+            p=2p1;
         if(level==2)
             p=p2;
         if(level==3)
             p=p3;
     }
 
-    public void startGame()
+    private void startGame()
     {
         turn=(int)(Math.random())+1;
         chooseLevel();
@@ -89,7 +91,7 @@ public class TicTacToe extends DeveloperTTT
         System.out.println("\nNobody won. It's a tie.\n:-)");
     }
 
-    public void display()
+    private void display()
     {
         System.out.println("\u000c");
         System.out.println();
@@ -119,7 +121,7 @@ public class TicTacToe extends DeveloperTTT
         }
     }
 
-    public boolean check(char[][] grid2)
+    private boolean check(char[][] grid2)
     {
 
         for(int i=0;i<3;i++)
@@ -148,10 +150,10 @@ public class TicTacToe extends DeveloperTTT
         return false;
     }
 
-    public void preArrange()
+    private  void preArrange()
     {
         for(int i=0;i<3;i++)
-        {    
+        {
             for(int j=0;j<3;j++)
             {
                 grid[i][j]=' ';
@@ -159,10 +161,10 @@ public class TicTacToe extends DeveloperTTT
         }
     }
 
-    public boolean GameContinues()
+    private boolean GameContinues()
     {
         for(int i=0;i<3;i++)
-        {   
+        {
             for(int j=0;j<3;j++)
             {
                 if(grid[i][j]==' ')
@@ -175,7 +177,7 @@ public class TicTacToe extends DeveloperTTT
         return false;
     }
 
-    public boolean valid(int a, int b)
+    private boolean valid(int a, int b)
     {
         if(a<0||a>3)
         {
@@ -195,7 +197,7 @@ public class TicTacToe extends DeveloperTTT
         return false;
     }
 
-    public void aiIsFool()
+    private void aiIsFool()
     {
         int a,b;
 
@@ -209,7 +211,7 @@ public class TicTacToe extends DeveloperTTT
         grid[a][b]=ai;
     }
 
-    public void aiIsSmart()
+    private void aiIsSmart()
     {
         int a,b;
 
@@ -221,7 +223,7 @@ public class TicTacToe extends DeveloperTTT
         }while(!valid(a,b));
 
         for(int i=0;i<3;i++)
-        { 
+        {
             for(int j=2;j>=0;j--)
             {
                 if(grid[i][j]==' '&&preCheckW(i,j))
@@ -240,14 +242,14 @@ public class TicTacToe extends DeveloperTTT
                 {
                     grid[i][j]=ai;
                     return;
-                } 
+                }
             }
         }
 
         grid[a][b]=ai;
     }
 
-    public void aiTurn()
+    private void aiTurn()
     {
         String N[]={"fool's move","smarty move"};
         double P[]={(1-p),p};
@@ -256,9 +258,9 @@ public class TicTacToe extends DeveloperTTT
         String N2[]=new String[100];
 
         for(int i=0;i<N.length;i++)
-        {  
+        {
             for(int j=0;j<(int)(P[i]*100);j++)
-            {  
+            {
                 N2[k++]=N[i];
             }
         }
@@ -270,9 +272,9 @@ public class TicTacToe extends DeveloperTTT
             aiIsSmart();
     }
 
-    int[] lastmove={0,0};
 
-    public void humanTurn()
+
+    private void humanTurn()
     {
 
         Scanner sc=new Scanner(System.in);
@@ -293,7 +295,7 @@ public class TicTacToe extends DeveloperTTT
 
     }
 
-    public boolean preCheckW(int a,int b)
+    private boolean preCheckW(int a,int b)
     {
 
         char[][] temp=new char[3][3];
@@ -312,7 +314,7 @@ public class TicTacToe extends DeveloperTTT
 
     }
 
-    public boolean preCheckL(int a, int b)
+    private boolean preCheckL(int a, int b)
     {
 
         char[][] temp=new char[3][3];
@@ -396,7 +398,7 @@ public class TicTacToe extends DeveloperTTT
                     int a=-1,b=-1;
 
                     for(int i=0;i<3;i++)
-                    { 
+                    {
                         for(int j=2;j>=0;j--)
                         {
                             if(grid[i][j]==' '&&preCheckW(i,j))
@@ -415,7 +417,7 @@ public class TicTacToe extends DeveloperTTT
                             {
                                 grid[i][j]=ai;
                                 return;
-                            } 
+                            }
                         }
                     }
                     if(a!=-1)
@@ -487,7 +489,7 @@ public class TicTacToe extends DeveloperTTT
         }
     }
 
-    public boolean checkTie(char[][] grid)
+    private boolean checkTie(char[][] grid)
     {
         for(int i=0;i<grid.length;i++)
             for(int j=0;j<grid[0].length;j++)
@@ -496,7 +498,7 @@ public class TicTacToe extends DeveloperTTT
         return true;
     }
 
-    public boolean contact(int a[],int b[])
+    private boolean contact(int a[],int b[])
     {
         if(a[0]!=b[0]&&a[1]!=b[1])
             return false;
@@ -509,9 +511,9 @@ public class TicTacToe extends DeveloperTTT
         return false;
     }
 
-    public int[] farCorner(int[] m)
+    private int[] farCorner(int[] m)
     {
-        int n[]={0,0};                    
+        int n[]={0,0};
         if(m[0]==1&&m[1]==0)
         {
             if((int)(Math.random()*2)==1)
